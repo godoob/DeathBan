@@ -1,0 +1,11 @@
+# Ban time in minutes
+ban_time: 30
+
+# You can also use color codes "§"
+# Message sent when kicking out player
+# {time} replaces with the actual time in minutes
+ban_message: "You died and have been banned for {time} minutes."
+
+# Message sent when the banned player joins
+# {time} replaces with the actual time in minutes
+banned_message: "You are still banned. You'll be unbanned in {time} minutes."

@@ -1,0 +1,16 @@
+name: DeathBan
+version: 0.1
+api: 4.0.0
+main: godoob\deathban\DeathBan
+author: godoob
+
+commands:
+  deathban:
+    description: main command to configure deathban
+    permission: deathban.main
+  
+permissions:
+  deathban.main:
+    default: op
+  deathban.noban:
+    default: false
