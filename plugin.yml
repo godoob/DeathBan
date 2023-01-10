@@ -1,13 +1,17 @@
 name: DeathBan
-version: 0.1
+version: 0.2
 api: 4.0.0
 main: godoob\deathban\DeathBan
 author: godoob
 
 commands:
   deathban:
-    description: main command to configure deathban
+    usage: "/deathban <ban|unban> <player> [time]"
+    aliases:
+      - db
+    description: main command of deathban
     permission: deathban.main
+    permission-message: "You don't have permission to use this command."
   
 permissions:
   deathban.main:

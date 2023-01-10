@@ -1,8 +1,10 @@
 <?php
 namespace godoob\deathban;
 
+use pocketmine\command\{CommandSender, Command};
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
+use pocketmine\utils\TextFormat;
 
 class DeathBan extends PluginBase {
 
@@ -21,17 +23,54 @@ class DeathBan extends PluginBase {
         $this->getLogger()->info("Deathban loaded!");
     }
 
-    public function setBan(string $name, int $time){
-        $time *= 60;
+    public function onCommand(CommandSender $sender, Command $command, string $labels, array $args): bool {
+        if($command == "deathban"){
+            if(count($args) >= 2 && count($args) < 4){
+                $player = strtolower($args[1]);
+                switch($args[0]){
+                    case "ban":
+                        $time = isset($args[2]) ? $args[2] : $this->banTime;
+                        $this->setBan($player, $time);
+
+                        $sender->sendMessage(TextFormat::GREEN ."Successfully banned ". $player ." for " . $time . " minutes!");
+                        return true;
+                        break;
+                    
+                    case "unban":
+                        $this->removeBan($player);
+                        
+                        $sender->sendMessage(TextFormat::GREEN ."Successfully unbanned ". $player);
+                        return true;
+                        break;
+                }
+            }
+            return false;
+        }
+    }
+
+    public function setBan(string $name, int $banTime){
+        $name = strtolower($name);
+        $time = $banTime*60;
         $time += time();
 
         $this->banList[$name] = $time;
 
         $this->bans->set($name, $time);
         $this->bans->save();
+
+        $player = $this->getServer()->getPlayerExact($name);
+
+        if($player != null){
+            $banMessage = $this->getConfig()->get("ban_message");
+            $reason = str_replace("{time}", $banTime, $banMessage);
+
+            $player->kick($reason);
+        }
     }
 
     public function removeBan(string $name){
+        $name = strtolower($name);
+        
         unset($this->banList[$name]);
 
         $this->bans->remove($name);
@@ -43,6 +82,7 @@ class DeathBan extends PluginBase {
     }
 
     public function isBanned(string $name){
+        $name = strtolower($name);
         if(!isset($this->banList[$name])) return false;
         return ($this->banList[$name] > time());
     }
