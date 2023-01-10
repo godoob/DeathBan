@@ -1,5 +1,9 @@
 # DeathBan
-A HCF plugin to ban players for certain time if they die.
+A pmmp plugin to ban players for a certain time if they die.
+
+## Commands
+### /deathban
+Usage: /deathban <ban|unban> \<player\> [time]
 
 ## Permissions
 `deathban.noban`
@@ -9,6 +13,3 @@ A HCF plugin to ban players for certain time if they die.
 `deathban.main` 
   - The permission for the main command of deathban (WIP!)
   - defaults to op
-  
-## Commands
-`Work in progress!`
