@@ -29,7 +29,7 @@ class DeathBan extends PluginBase {
                 $player = strtolower($args[1]);
                 switch($args[0]){
                     case "ban":
-                        $time = isset($args[2]) ? $args[2] : $this->banTime;
+                        $time = $args[2] ?? $this->banTime;
                         $this->setBan($player, $time);
 
                         $sender->sendMessage(TextFormat::GREEN ."Successfully banned ". $player ." for " . $time . " minutes!");

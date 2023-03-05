@@ -17,7 +17,7 @@ class EventListener implements Listener {
             $bannedMessage = $this->plugin->getConfig()->get("banned_message");
             $reason = str_replace("{time}", $timeLeft, $bannedMessage);
 
-            $event->setKickReason(PlayerPreLoginEvent::KICK_REASON_BANNED, $reason);
+            $event->setKickFlag(PlayerPreLoginEvent::KICK_FLAG_BANNED, $reason);
         }
     }
 
@@ -27,7 +27,6 @@ class EventListener implements Listener {
         if(!$player->hasPermission("deathban.noban")){
             $this->plugin->setBan($player->getName(), $this->plugin->banTime);
 
-            $timeLeft = round(($this->plugin->getBanTime($player->getName()) - time()) / 60);
             $banMessage = $this->plugin->getConfig()->get("ban_message");
             $reason = str_replace("{time}", $this->plugin->banTime, $banMessage);
 
