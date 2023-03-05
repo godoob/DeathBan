@@ -1,18 +1,19 @@
 <?php
+
 namespace godoob\deathban;
 
 use pocketmine\event\Listener;
-use pocketmine\event\player\{PlayerPreLoginEvent, PlayerDeathEvent};
+use pocketmine\event\player\{PlayerDeathEvent, PlayerPreLoginEvent};
 
 class EventListener implements Listener {
-    public function __construct(DeathBan $plugin){
+    public function __construct(DeathBan $plugin) {
         $this->plugin = $plugin;
     }
 
-    public function onJoin(PlayerPreLoginEvent $event){
+    public function onJoin(PlayerPreLoginEvent $event) {
         $player = $event->getPlayerInfo();
 
-        if($this->plugin->isBanned($player->getUsername())){
+        if ($this->plugin->isBanned($player->getUsername())) {
             $timeLeft = round(($this->plugin->getBanTime($player->getUsername()) - time()) / 60);
             $bannedMessage = $this->plugin->getConfig()->get("banned_message");
             $reason = str_replace("{time}", $timeLeft, $bannedMessage);
@@ -21,13 +22,12 @@ class EventListener implements Listener {
         }
     }
 
-    public function onDeath(PlayerDeathEvent $event){
+    public function onDeath(PlayerDeathEvent $event) {
         $player = $event->getPlayer();
 
-        if(!$player->hasPermission("deathban.noban")){
+        if (!$player->hasPermission("deathban.noban")) {
             $this->plugin->setBan($player->getName(), $this->plugin->banTime);
 
-            $timeLeft = round(($this->plugin->getBanTime($player->getName()) - time()) / 60);
             $banMessage = $this->plugin->getConfig()->get("ban_message");
             $reason = str_replace("{time}", $this->plugin->banTime, $banMessage);
 
